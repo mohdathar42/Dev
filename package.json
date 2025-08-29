@@ -1,0 +1,25 @@
+{
+  "type": "commonjs",
+  "dependencies": {
+    "express": "^5.1.0",
+    "mongodb": "^6.19.0",
+    "nodemon": "^3.1.10",
+    "react": "^19.1.1"
+  },
+  "name": "app.js",
+  "version": "1.0.0",
+  "main": "app.js",
+  "scripts": {
+    "Dev": "node src/app.js",
+    "start": "nodemon src/app.js"
+  },
+  "repository": {
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mohdathar42/Dev/issues"
+  },
+  "homepage": "https://github.com/mohdathar42/Dev#readme",
+  "description": ""
+}
