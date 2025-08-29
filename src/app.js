@@ -2,11 +2,19 @@ const express = require("express");
 const app = express();
 const port = 777;
 
-app.use("/test", (req, res) => {
-  res.send("hi");
+ 
+app.get("/user", (req, res) => {
+  res.send({firstname:"mohd",lastname:"athar" ,class:"mca"});
 });
-app.get("/hello", (req, res) => {
-  res.send("hello bro express  yes server");
+ 
+app.post("/user", (req, res) => { 
+console.log("hello");
+
+  res.send( "data succesfully saved in the database");
+});
+ 
+app.delete("/user", (req, res) => {
+  res.send( "user successfully delete from the db")
 });
 
 app.listen(port, () => {
