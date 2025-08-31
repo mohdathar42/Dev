@@ -1,18 +1,16 @@
 const express = require("express");
 const app = express();
 const port = 777;
+const { adminAuth, userAuth } = require("./middlewares/Auth");
 
-app.use(
-  "/user",
-  (req, res, next) => {
-    // res.send("route handler  eq 1"); 
-    next();
-  },
-  (req, res) => {
-    res.send("route handler e2");
-  }
-);
+app.use("/Admin", adminAuth);
+app.get("/user", userAuth, (req, res) => {
+  res.send("user added successfully  from user apis");
+});
 
+app.get("/Admin/AddUser", (req, res) => {
+  res.send("user added successfully  from addmin apis");
+});
 
 app.listen(port, () => {
   console.log(`we are listening port no  ${port}`);
