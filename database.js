@@ -1,1 +1,0 @@
-const URI="mongodb+srv://matharkhan732_db_user:TV18CZNzwC5vn2XA@studentdata.mwbeg6l.mongodb.net/"

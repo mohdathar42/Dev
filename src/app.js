@@ -1,17 +1,31 @@
 const express = require("express");
 const app = express();
+const connectDb = require("./config/database");
+const User = require("./models/user");
 const port = 777;
-const { adminAuth, userAuth } = require("./middlewares/Auth");
 
-app.use("/Admin", adminAuth);
-app.get("/user", userAuth, (req, res) => {
-  res.send("user added successfully  from user apis");
+//middleware to convert incoming req json to object
+app.use(express.json());
+
+app.post("/signUp", async (req, res) => {
+  const user = new User(req.body);
+  try {
+    //save the data into database
+     await user.save();
+    res.send("user added successfully");
+  } catch (err) {
+    res.status(400).send("error saving the user" + err.message);
+  }
 });
 
-app.get("/Admin/AddUser", (req, res) => {
-  res.send("user added successfully  from addmin apis");
-});
-
-app.listen(port, () => {
-  console.log(`we are listening port no  ${port}`);
-});
+//connect database
+connectDb()
+  .then(() => {
+    console.log("Database sccessfully connected.....");
+    app.listen(port, () => {
+      console.log(`we are listening port no  ${port}.....`);
+    });
+  })
+  .catch((err) => {
+    console.err("database cannot be connected......");
+  });
