@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-
+const validator=require("validator")
 const userSchema = mongoose.Schema(
   {
     firstName: {
@@ -22,10 +22,20 @@ const userSchema = mongoose.Schema(
       unique: true,
       lowercase: true,
       trim: true,
+      validate(value){
+        if(!validator.isEmail(value)){
+          throw new Error(`please enter a valid emailId  ${value}`)
+        }
+      }
     },
     password: {
       type: String,
       required: true,
+      validate(value){
+        if(!validator.isStrongPassword(value)){
+          throw new Error(`please enter a strong password.....   "${value}"`)
+        }
+      }
     },
     age: {
       type: Number,
@@ -45,6 +55,11 @@ const userSchema = mongoose.Schema(
       type: String,
       default:
         "https://www.un.org/pga/wp-content/uploads/sites/53/2018/09/Dummy-image-1.jpg",
+        validate(value){
+          if(!validator.isURL(value)){
+            throw new Error("please enter a valid url"+value)
+          }
+        }
     },
     about: {
       type: String,
@@ -53,12 +68,29 @@ const userSchema = mongoose.Schema(
     skills: {
       type: [String],
       default: ["javascript", "node js", "python"],
+    
     },
   },
   {
     timestamps: true,
   }
 );
+userSchema.methods.getJWT = async function () {
+  const findUser = this;
+  const token = await jwt.sign({ _id: findUser._id }, "atharKhan@123", {
+    expiresIn: "1d",
+  });
+  return token;
+};
+userSchema.methods.validatePassword = async function (passwordInputByUser) {
+  const findUser = this;
+  const passwordHash = findUser.password;
+  const isPasswordValid = await bcrypt.compare(
+    passwordInputByUser,
+    passwordHash
+  );
+  return isPasswordValid;
+};
 
 const User = mongoose.model("User", userSchema);
 module.exports = User;
